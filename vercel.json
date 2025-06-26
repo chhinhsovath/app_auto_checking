@@ -1,42 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "production-server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/production-server.js"
-    },
-    {
-      "src": "/health",
-      "dest": "/production-server.js"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/production-server.js"
-    },
-    {
-      "src": "/admin",
-      "dest": "/production-server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
   },
   "functions": {
-    "production-server.js": {
+    "api/index.js": {
       "maxDuration": 10
     }
   }
