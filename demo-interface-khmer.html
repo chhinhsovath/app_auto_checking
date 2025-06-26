@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <title>ប្រព័ន្ធអត្តដ្ឋាន ម៉ូបាយ - ទំព័រគ្រប់គ្រងដោយម៉ូតាបេស</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Khmer OS', 'Khmer OS System', 'Khmer OS Battambang', sans-serif; 
+            margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; direction: ltr;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { 
+            text-align: center; margin-bottom: 40px; background: white; 
+            padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+        }
+        .header h1 { color: #667eea; margin: 0 0 10px 0; font-size: 2.5em; }
+        .header p { color: #666; margin: 0; font-size: 1.1em; }
+        .header .badge { 
+            background: linear-gradient(45deg, #4CAF50, #45a049); 
+            color: white; padding: 8px 16px; border-radius: 20px; 
+            font-size: 14px; font-weight: bold; display: inline-block; margin-top: 10px;
+        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+        .card { 
+            background: white; padding: 25px; border-radius: 15px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { margin-top: 0; color: #333; font-size: 1.4em; display: flex; align-items: center; }
+        .card h3::before { content: attr(data-icon); margin-right: 10px; font-size: 1.2em; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+        .form-group input, .form-group select { 
+            width: 100%; padding: 12px 16px; border: 2px solid #e1e5e9; 
+            border-radius: 10px; font-size: 16px; transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus { 
+            outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .btn { 
+            background: linear-gradient(45deg, #667eea, #764ba2); color: white; border: none; 
+            padding: 14px 28px; border-radius: 10px; cursor: pointer; font-size: 16px; 
+            font-weight: 600; width: 100%; margin-top: 10px; transition: all 0.3s ease;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .btn:active { transform: translateY(0); }
+        .btn.secondary { 
+            background: linear-gradient(45deg, #6c757d, #5a6268); 
+        }
+        .status { padding: 15px 20px; border-radius: 10px; margin: 15px 0; font-weight: 500; }
+        .success { background: linear-gradient(45deg, #28a745, #20c997); color: white; }
+        .error { background: linear-gradient(45deg, #dc3545, #fd7e14); color: white; }
+        .info { background: linear-gradient(45deg, #17a2b8, #6f42c1); color: white; }
+        .warning { background: linear-gradient(45deg, #ffc107, #fd7e14); color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { 
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef); 
+            padding: 20px; border-radius: 15px; text-align: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .stat-number { font-size: 32px; font-weight: bold; color: #667eea; margin-bottom: 5px; }
+        .stat-label { color: #666; font-size: 14px; font-weight: 500; }
+        .credentials { 
+            background: linear-gradient(135deg, #ff7b7b, #667eea); 
+            color: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .credentials h4 { margin-top: 0; font-size: 1.3em; }
+        .api-list { list-style: none; padding: 0; }
+        .api-list li { 
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef); 
+            margin: 10px 0; padding: 15px; border-radius: 8px; 
+            font-family: 'Courier New', monospace; font-weight: 500;
+            border-left: 4px solid #667eea;
+        }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+        .feature { text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px; }
+        .feature-icon { font-size: 48px; margin-bottom: 15px; }
+        .feature h4 { margin: 10px 0 5px 0; color: #333; }
+        .feature p { color: #666; font-size: 14px; margin: 0; }
+        .activity-item { 
+            background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 8px; 
+            border-left: 4px solid #28a745; display: flex; justify-content: space-between; align-items: center;
+        }
+        .activity-info h5 { margin: 0 0 5px 0; color: #333; }
+        .activity-info p { margin: 0; color: #666; font-size: 14px; }
+        .activity-time { color: #667eea; font-weight: 600; font-size: 12px; }
+        .loading { display: none; text-align: center; padding: 20px; }
+        .loading.show { display: block; }
+        .spinner { 
+            border: 4px solid #f3f3f3; border-top: 4px solid #667eea; 
+            border-radius: 50%; width: 40px; height: 40px; 
+            animation: spin 1s linear infinite; margin: 0 auto 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .grid { grid-template-columns: 1fr; }
+            body { padding: 10px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Khmer+OS&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 ប្រព័ន្ធអត្តដ្ឋានម៉ូបាយ</h1>
+            <p>ការភ្ជាប់ពេញលេញជាមួយម៉ូតាបេស PostgreSQL</p>
+            <div class="badge">✅ បានភ្ជាប់ទៅម៉ូតាបេស</div>
+        </div>
+
+        <div class="credentials">
+            <h4>🔑 គណនីសាកល្បងម៉ូតាបេស</h4>
+            <p><strong>អ្នកគ្រប់គ្រង:</strong> admin@company.com / password123</p>
+            <p><strong>បុគ្គលិក:</strong> john.doe@company.com / password123</p>
+            <p><strong>អ្នកផ្សេងទៀត:</strong> jane.smith@company.com, mike.johnson@company.com, sarah.wilson@company.com</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3 data-icon="📊">ស្ថិតិម៉ូតាបេសផ្ទាល់</h3>
+                <div class="loading" id="statsLoading">
+                    <div class="spinner"></div>
+                    <p>កំពុងផ្ទុកស្ថិតិ...</p>
+                </div>
+                <div class="stats" id="statsContainer">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalStaff">-</div>
+                        <div class="stat-label">បុគ្គលិកទាំងអស់</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="presentToday">-</div>
+                        <div class="stat-label">មានវត្តមានថ្ងៃនេះ</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="attendanceRate">-</div>
+                        <div class="stat-label">អត្រាវត្តមាន</div>
+                    </div>
+                </div>
+                <button class="btn secondary" onclick="loadStats()">🔄 ធ្វើឲ្យស្ថិតិទាន់សម័យ</button>
+            </div>
+
+            <div class="card">
+                <h3 data-icon="🔐">សាកល្បងការផ្ទៀងផ្ទាត់</h3>
+                <div class="form-group">
+                    <label>អុីមែល</label>
+                    <select id="loginEmail">
+                        <option value="admin@company.com">admin@company.com (អ្នកគ្រប់គ្រង)</option>
+                        <option value="john.doe@company.com">john.doe@company.com (អ្នកអភិវឌ្ឍ)</option>
+                        <option value="jane.smith@company.com">jane.smith@company.com (ទីផ្សារ)</option>
+                        <option value="mike.johnson@company.com">mike.johnson@company.com (លក់)</option>
+                        <option value="sarah.wilson@company.com">sarah.wilson@company.com (មធ្យោបាយមនុស្ស)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>លេខសម្ងាត់</label>
+                    <input type="password" id="loginPassword" value="password123">
+                </div>
+                <button class="btn" onclick="testLogin()">🔓 សាកល្បងចូលម៉ូតាបេស</button>
+                <div id="loginResult"></div>
+            </div>
+
+            <div class="card">
+                <h3 data-icon="📍">ការចូលដោយភូមិសាស្ត្រ</h3>
+                <p><strong>ទីតាំងការិយាល័យ:</strong> OFFICE_LAT, OFFICE_LNG</p>
+                <p><strong>ប្រវែងកម្រិតភូមិសាស្ត្រ:</strong> OFFICE_RADIUS ម៉ែត្រ</p>
+                <div class="form-group">
+                    <label>រយៈទទឹង</label>
+                    <input type="number" id="latitude" value="OFFICE_LAT" step="0.000001">
+                </div>
+                <div class="form-group">
+                    <label>រយៈបណ្ដោយ</label>
+                    <input type="number" id="longitude" value="OFFICE_LNG" step="0.000001">
+                </div>
+                <div class="form-group">
+                    <label>លេខសម្គាល់បុគ្គលិក (សម្រាប់សាកល្បង)</label>
+                    <select id="staffId">
+                        <option value="1">1 - អ្នកគ្រប់គ្រង</option>
+                        <option value="2">2 - John Doe</option>
+                        <option value="3">3 - Jane Smith</option>
+                        <option value="4">4 - Mike Johnson</option>
+                        <option value="5">5 - Sarah Wilson</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>កំណត់ចំណាំ (ស្រេចចិត្ត)</label>
+                    <input type="text" id="notes" placeholder="កំណត់ចំណាំការចូលការិយាល័យ">
+                </div>
+                <button class="btn" onclick="testCheckin()">✅ ចូលការិយាល័យម៉ូតាបេស</button>
+                <button class="btn secondary" onclick="testOutsideGeofence()">❌ សាកល្បងនៅក្រៅភូមិសាស្ត្រ</button>
+                <div id="checkinResult"></div>
+            </div>
+
+            <div class="card">
+                <h3 data-icon="👥">បញ្ជីបុគ្គលិក</h3>
+                <div class="loading" id="staffLoading">
+                    <div class="spinner"></div>
+                    <p>កំពុងផ្ទុកបុគ្គលិក...</p>
+                </div>
+                <div id="staffList"></div>
+                <button class="btn secondary" onclick="loadStaff()">👥 ផ្ទុកបុគ្គលិកពីម៉ូតាបេស</button>
+            </div>
+
+            <div class="card">
+                <h3 data-icon="🕒">សកម្មភាពថ្មីៗ</h3>
+                <div class="loading" id="activityLoading">
+                    <div class="spinner"></div>
+                    <p>កំពុងផ្ទុកសកម្មភាព...</p>
+                </div>
+                <div id="activityList"></div>
+                <button class="btn secondary" onclick="loadRecentActivity()">🔄 ធ្វើឲ្យសកម្មភាពទាន់សម័យ</button>
+            </div>
+
+            <div class="card">
+                <h3 data-icon="🚀">លក្ខណៈពិសេសប្រព័ន្ធ</h3>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <div class="feature-icon">🗄️</div>
+                        <h4>PostgreSQL</h4>
+                        <p>ការភ្ជាប់ម៉ូតាបេសពិត</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔐</div>
+                        <h4>ការផ្ទៀងផ្ទាត់</h4>
+                        <p>ប្រព័ន្ធចូលសុវត្ថិភាព</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📍</div>
+                        <h4>ភូមិសាស្ត្រ</h4>
+                        <p>ការចូលតាមទីតាំង</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">📊</div>
+                        <h4>ពេលវេលាពិត</h4>
+                        <p>ស្ថិតិផ្ទាល់ និងតាមដាន</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 data-icon="🔌">ចំនុចទាក់ទង API</h3>
+                <ul class="api-list">
+                    <li>POST /api/auth/login - ការផ្ទៀងផ្ទាត់ម៉ូតាបេស</li>
+                    <li>POST /api/attendance/checkin - ការចូលតាមភូមិសាស្ត្រ</li>
+                    <li>GET /api/attendance/status - ស្ថានភាពបច្ចុប្បន្ន</li>
+                    <li>GET /api/dashboard/stats - ស្ថិតិផ្ទាល់</li>
+                    <li>GET /api/staff - បញ្ជីបុគ្គលិក</li>
+                    <li>GET /health - សុខភាពប្រព័ន្ធ</li>
+                </ul>
+                <button class="btn secondary" onclick="testHealthCheck()">🏥 សាកល្បងពិនិត្យសុខភាព</button>
+                <div id="healthResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        async function testLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const resultDiv = document.getElementById('loginResult');
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUser = data.data.user;
+                    resultDiv.className = 'status success';
+                    resultDiv.innerHTML = `✅ ការចូលម៉ូតាបេសបានជោគជ័យ!<br>
+                        <strong>សូមស្វាគមន៍ ${currentUser.name}</strong><br>
+                        លេខសម្គាល់: ${currentUser.employee_id} | ${currentUser.position}<br>
+                        នាយកដ្ឋាន: ${currentUser.department}`;
+                } else {
+                    resultDiv.className = 'status error';
+                    resultDiv.innerHTML = '❌ ' + data.error;
+                }
+            } catch (error) {
+                resultDiv.className = 'status error';
+                resultDiv.innerHTML = '❌ កំហុស: ' + error.message;
+            }
+        }
+
+        async function testCheckin() {
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+            const notes = document.getElementById('notes').value;
+            const staffId = document.getElementById('staffId').value;
+            const resultDiv = document.getElementById('checkinResult');
+
+            try {
+                const response = await fetch('/api/attendance/checkin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ latitude, longitude, notes, staff_id: parseInt(staffId) })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.className = 'status success';
+                    resultDiv.innerHTML = `✅ ${data.message}<br>
+                        ចម្ងាយ: ${data.data.location.distance.toFixed(1)}ម៉ែត្រ<br>
+                        <strong>បានរក្សាទុកក្នុងម៉ូតាបេស!</strong>`;
+                    loadStats(); // Refresh stats
+                    loadRecentActivity(); // Refresh activity
+                } else {
+                    resultDiv.className = 'status error';
+                    resultDiv.innerHTML = '❌ ' + data.message;
+                }
+            } catch (error) {
+                resultDiv.className = 'status error';
+                resultDiv.innerHTML = '❌ កំហុស: ' + error.message;
+            }
+        }
+
+        function testOutsideGeofence() {
+            // Set coordinates far from office
+            document.getElementById('latitude').value = '11.6';
+            document.getElementById('longitude').value = '105.0';
+            testCheckin();
+        }
+
+        async function loadStats() {
+            const loading = document.getElementById('statsLoading');
+            const container = document.getElementById('statsContainer');
+            
+            loading.classList.add('show');
+            
+            try {
+                const response = await fetch('/api/dashboard/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalStaff').textContent = data.data.today.totalStaff;
+                    document.getElementById('presentToday').textContent = data.data.today.presentToday;
+                    document.getElementById('attendanceRate').textContent = data.data.today.attendanceRate + '%';
+                    
+                    // Update recent activity
+                    displayRecentActivity(data.data.recentActivity);
+                }
+            } catch (error) {
+                console.error('កំហុសក្នុងការផ្ទុកស្ថិតិ:', error);
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+
+        async function loadStaff() {
+            const loading = document.getElementById('staffLoading');
+            const container = document.getElementById('staffList');
+            
+            loading.classList.add('show');
+            
+            try {
+                const response = await fetch('/api/staff');
+                const data = await response.json();
+                
+                if (data.success) {
+                    container.innerHTML = data.data.staff.map(staff => `
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <h5>${staff.name} (${staff.employee_id})</h5>
+                                <p>${staff.position} - ${staff.department}</p>
+                                <p>📧 ${staff.email}</p>
+                            </div>
+                            <div class="activity-time">
+                                ${staff.is_active ? '✅ សកម្ម' : '❌ អសកម្ម'}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                container.innerHTML = '<div class="status error">កំហុសក្នុងការផ្ទុកបុគ្គលិក: ' + error.message + '</div>';
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+
+        async function loadRecentActivity() {
+            const loading = document.getElementById('activityLoading');
+            
+            loading.classList.add('show');
+            
+            try {
+                const response = await fetch('/api/dashboard/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayRecentActivity(data.data.recentActivity);
+                }
+            } catch (error) {
+                console.error('កំហុសក្នុងការផ្ទុកសកម្មភាព:', error);
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+
+        function displayRecentActivity(activities) {
+            const container = document.getElementById('activityList');
+            
+            if (activities && activities.length > 0) {
+                container.innerHTML = activities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-info">
+                            <h5>${activity.name} (${activity.employee_id})</h5>
+                            <p>${activity.department}</p>
+                        </div>
+                        <div class="activity-time">
+                            ${new Date(activity.check_in_time).toLocaleDateString('km-KH')}<br>
+                            ${new Date(activity.check_in_time).toLocaleTimeString('km-KH')}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="info">រកមិនឃើញសកម្មភាពថ្មីៗ</div>';
+            }
+        }
+
+        async function testHealthCheck() {
+            const resultDiv = document.getElementById('healthResult');
+            
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                resultDiv.className = 'status success';
+                resultDiv.innerHTML = `✅ ${data.message}<br>
+                    ម៉ូតាបេស: ${data.database}<br>
+                    ពេលវេលា: ${new Date(data.timestamp).toLocaleString('km-KH')}`;
+            } catch (error) {
+                resultDiv.className = 'status error';
+                resultDiv.innerHTML = '❌ ការពិនិត្យសុខភាពបានបរាជ័យ: ' + error.message;
+            }
+        }
+
+        // Load initial data
+        loadStats();
+        loadStaff();
+        loadRecentActivity();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadStats();
+            loadRecentActivity();
+        }, 30000);
+    </script>
+</body>
+</html>
